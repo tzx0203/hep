@@ -13,7 +13,7 @@
             --text: #1f2937;
             --text-light: #6b7280;
             --border: #e5e7eb;
-            --radius: 12px; /* Softer corners for mobile */
+            --radius: 12px;
             --spacing: 16px;
         }
 
@@ -25,8 +25,8 @@
             color: var(--text);
             margin: 0;
             padding: var(--spacing);
-            font-size: 16px; /* Prevents iOS zoom on inputs */
-            padding-bottom: 80px; /* Space for scroll */
+            font-size: 16px;
+            padding-bottom: 80px;
         }
 
         h1, h2, h3 { margin: 0; }
@@ -52,16 +52,14 @@
             color: var(--text);
         }
 
-        /* INPUT GRID - Mobile First Approach */
+        /* INPUT GRID */
         .input-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 columns default */
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
         .input-group { display: flex; flex-direction: column; }
-        
-        /* Last item (Distance) spans full width on mobile */
         .input-group:last-child { grid-column: span 2; }
 
         label {
@@ -78,7 +76,7 @@
             background: #fff;
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 12px; /* Larger touch target */
+            padding: 12px;
             font-size: 1rem;
             color: var(--text);
             width: 100%;
@@ -90,7 +88,6 @@
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
-        /* Desktop override for inputs */
         @media (min-width: 600px) {
             .input-grid { grid-template-columns: repeat(5, 1fr); }
             .input-group:last-child { grid-column: span 1; }
@@ -140,7 +137,6 @@
         /* RESULTS AREA */
         #report { display: none; }
 
-        /* HR Grid */
         .hr-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -158,7 +154,9 @@
         .hr-card .val { font-size: 1.1rem; font-weight: 800; display: block; }
         .hr-card .sub { font-size: 0.65rem; opacity: 0.9; }
 
-        /* Stats Grid */
+        /* Full Analysis Section (Hidden if only age is input) */
+        #fullAnalysisCard { display: none; }
+
         .stats-container {
             display: flex;
             flex-wrap: wrap;
@@ -166,7 +164,7 @@
             margin-bottom: 20px;
         }
         .stat-box {
-            flex: 1 1 30%; /* Grow, shrink, basis */
+            flex: 1 1 30%;
             background: #f9fafb;
             padding: 12px;
             border-radius: 8px;
@@ -176,7 +174,6 @@
         .stat-val { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
         .stat-lbl { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; line-height: 1.2; }
 
-        /* Rx List */
         .rx-item {
             display: flex;
             align-items: center;
@@ -200,7 +197,6 @@
         .rx-desc { font-size: 0.8rem; color: var(--text-light); }
         .rx-result { font-weight: 700; color: var(--text); font-size: 1rem; text-align: right; margin-left: 10px; white-space: nowrap;}
 
-        /* Formula Section */
         .formula-tab {
             margin-top: 20px;
             background: #111827;
@@ -217,6 +213,10 @@
         .toggle-link {
             display: block; text-align: center; margin-top: 20px;
             color: var(--text-light); font-size: 0.85rem; text-decoration: underline; cursor: pointer;
+        }
+        
+        .missing-info-msg {
+            text-align: center; font-size: 0.8rem; color: var(--text-light); padding-top: 10px; font-style: italic;
         }
 
     </style>
@@ -275,7 +275,7 @@
     <!-- REPORT CARD -->
     <div id="report">
         
-        <!-- Heart Rate -->
+        <!-- Heart Rate (Always shows if Age exists) -->
         <div class="card">
             <h2>Target Heart Rate</h2>
             <div class="hr-grid">
@@ -295,10 +295,13 @@
                     <span class="sub">RPE 14-15</span>
                 </div>
             </div>
+            <div id="partialMsg" class="missing-info-msg" style="display:none;">
+                Enter Height, Weight & Distance to see full analysis.
+            </div>
         </div>
 
-        <!-- Analysis -->
-        <div class="card">
+        <!-- Analysis & Rx (Only shows if all data exists) -->
+        <div class="card" id="fullAnalysisCard">
             <h2>Clinical Analysis</h2>
             <div class="stats-container">
                 <div class="stat-box">
@@ -377,7 +380,6 @@
 
     function toggleFormula() {
         document.getElementById('formulaTab').classList.toggle('open');
-        // Scroll to bottom if opening
         if(document.getElementById('formulaTab').classList.contains('open')){
             window.scrollTo(0, document.body.scrollHeight);
         }
@@ -394,45 +396,64 @@
         const lowPct = parseFloat(document.getElementById('lowPct').value) / 100;
         const highPct = parseFloat(document.getElementById('highPct').value) / 100;
 
-        if(!age || !ht || !wt || !dist) {
-            alert("Please complete all fields");
+        // 1. MINIMUM VALIDATION: Age is required
+        if(!age) {
+            alert("Please enter at least your AGE to generate Target Heart Rates.");
             return;
         }
 
-        // 1. Heart Rate
+        // 2. SHOW REPORT CONTAINER
+        const report = document.getElementById('report');
+        report.style.display = 'block';
+
+        // 3. CALCULATE HEART RATE (Available with just Age)
         const maxHR = 220 - age;
         document.getElementById('hr60').innerText = Math.round(maxHR*0.6);
         document.getElementById('hr70').innerText = Math.round(maxHR*0.7);
         document.getElementById('hr80').innerText = Math.round(maxHR*0.8);
 
-        // 2. Prediction
-        let pred = 0, lln = 0;
-        if(gender === 'male') {
-            pred = (7.57 * ht) - (5.02 * age) - (1.76 * wt) - 309;
-            lln = pred - 153;
+        // 4. CHECK IF FULL DATA IS AVAILABLE
+        const fullDataAvailable = (ht && wt && dist);
+        const fullCard = document.getElementById('fullAnalysisCard');
+        const partialMsg = document.getElementById('partialMsg');
+
+        if(fullDataAvailable) {
+            // SHOW Full Analysis
+            fullCard.style.display = 'block';
+            partialMsg.style.display = 'none';
+
+            // -- PREDICTION LOGIC --
+            let pred = 0, lln = 0;
+            if(gender === 'male') {
+                pred = (7.57 * ht) - (5.02 * age) - (1.76 * wt) - 309;
+                lln = pred - 153;
+            } else {
+                pred = (2.11 * ht) - (2.29 * wt) - (5.78 * age) + 667;
+                lln = pred - 139;
+            }
+
+            document.getElementById('predVal').innerText = pred.toFixed(0);
+            document.getElementById('pctVal').innerText = ((dist/pred)*100).toFixed(0) + "%";
+            document.getElementById('llnVal').innerText = lln.toFixed(0);
+
+            // -- RX LOGIC --
+            const baseSpd = dist / 100;
+            const minSpd = baseSpd * lowPct;
+            const maxSpd = baseSpd * highPct;
+
+            document.getElementById('rxTread').innerText = `${minSpd.toFixed(1)} - ${maxSpd.toFixed(1)}`;
+            document.getElementById('rxWalk20').innerText = `${(minSpd/3).toFixed(1)} - ${(maxSpd/3).toFixed(1)} km`;
+            document.getElementById('rxWalk30').innerText = `${(minSpd*0.5).toFixed(1)} - ${(maxSpd*0.5).toFixed(1)} km`;
+            
+            document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
+
         } else {
-            pred = (2.11 * ht) - (2.29 * wt) - (5.78 * age) + 667;
-            lln = pred - 139;
+            // HIDE Full Analysis if data missing
+            fullCard.style.display = 'none';
+            partialMsg.style.display = 'block';
         }
 
-        document.getElementById('predVal').innerText = pred.toFixed(0);
-        document.getElementById('pctVal').innerText = ((dist/pred)*100).toFixed(0) + "%";
-        document.getElementById('llnVal').innerText = lln.toFixed(0);
-
-        // 3. Rx
-        const baseSpd = dist / 100;
-        const minSpd = baseSpd * lowPct;
-        const maxSpd = baseSpd * highPct;
-
-        document.getElementById('rxTread').innerText = `${minSpd.toFixed(1)} - ${maxSpd.toFixed(1)}`;
-        document.getElementById('rxWalk20').innerText = `${(minSpd/3).toFixed(1)} - ${(maxSpd/3).toFixed(1)} km`;
-        document.getElementById('rxWalk30').innerText = `${(minSpd*0.5).toFixed(1)} - ${(maxSpd*0.5).toFixed(1)} km`;
-        
-        document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
-
-        // Show
-        const report = document.getElementById('report');
-        report.style.display = 'block';
+        // Scroll to results
         report.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
