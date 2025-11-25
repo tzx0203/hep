@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>6MWT Mobile Pro</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-active: #4338ca;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --radius: 12px; /* Softer corners for mobile */
+            --spacing: 16px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: var(--spacing);
+            font-size: 16px; /* Prevents iOS zoom on inputs */
+            padding-bottom: 80px; /* Space for scroll */
+        }
+
+        h1, h2, h3 { margin: 0; }
+        
+        .container { max-width: 600px; margin: 0 auto; }
+
+        /* CARDS */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: var(--spacing);
+            margin-bottom: var(--spacing);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* INPUT GRID - Mobile First Approach */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 columns default */
+            gap: 12px;
+        }
+
+        .input-group { display: flex; flex-direction: column; }
+        
+        /* Last item (Distance) spans full width on mobile */
+        .input-group:last-child { grid-column: span 2; }
+
+        label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        input, select {
+            appearance: none;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px; /* Larger touch target */
+            font-size: 1rem;
+            color: var(--text);
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Desktop override for inputs */
+        @media (min-width: 600px) {
+            .input-grid { grid-template-columns: repeat(5, 1fr); }
+            .input-group:last-child { grid-column: span 1; }
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-light); width: 50px; }
+
+        /* SETTINGS DRAWER */
+        .drawer {
+            display: none;
+            background: #f9fafb;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .drawer.open { display: block; animation: slideDown 0.2s ease-out; }
+        
+        @keyframes slideDown { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
+
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .setting-row input { width: 70px; text-align: center; }
+
+        /* RESULTS AREA */
+        #report { display: none; }
+
+        /* HR Grid */
+        .hr-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .hr-card {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #d1fae5;
+            padding: 8px 4px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .hr-card label { display: block; font-size: 0.65rem; margin-bottom: 2px; color: currentColor; opacity: 0.8;}
+        .hr-card .val { font-size: 1.1rem; font-weight: 800; display: block; }
+        .hr-card .sub { font-size: 0.65rem; opacity: 0.9; }
+
+        /* Stats Grid */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            flex: 1 1 30%; /* Grow, shrink, basis */
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 80px;
+        }
+        .stat-val { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; line-height: 1.2; }
+
+        /* Rx List */
+        .rx-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .rx-item:last-child { border-bottom: none; }
+        
+        .rx-icon { 
+            width: 40px; height: 40px; 
+            background: #eef2ff; color: var(--primary);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 12px;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .rx-content { flex: 1; }
+        .rx-title { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+        .rx-desc { font-size: 0.8rem; color: var(--text-light); }
+        .rx-result { font-weight: 700; color: var(--text); font-size: 1rem; text-align: right; margin-left: 10px; white-space: nowrap;}
+
+        /* Formula Section */
+        .formula-tab {
+            margin-top: 20px;
+            background: #111827;
+            color: #d1d5db;
+            padding: 15px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            display: none;
+        }
+        .formula-tab.open { display: block; }
+        .formula-line { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #374151; }
+        .formula-line strong { color: #60a5fa; display: block; margin-bottom: 4px; }
+        
+        .toggle-link {
+            display: block; text-align: center; margin-top: 20px;
+            color: var(--text-light); font-size: 0.85rem; text-decoration: underline; cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- INPUT CARD -->
+    <div class="card">
+        <h2>6MWT Input</h2>
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Gender</label>
+                <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Age</label>
+                <input type="number" id="age" placeholder="Yrs" inputmode="decimal">
+            </div>
+            <div class="input-group">
+                <label>Height (cm)</label>
+                <input type="number" id="height" placeholder="cm" inputmode="decimal">
+            </div>
+            <div class="input-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="weight" placeholder="kg" inputmode="decimal">
+            </div>
+            <div class="input-group">
+                <label>Distance Walked</label>
+                <input type="number" id="distance" placeholder="Meters" inputmode="decimal">
+            </div>
+        </div>
+
+        <!-- Hidden Settings -->
+        <div id="settingsDrawer" class="drawer">
+            <div class="setting-row">
+                <label>Lower Intensity (%)</label>
+                <input type="number" id="lowPct" value="80" inputmode="decimal">
+            </div>
+            <div class="setting-row">
+                <label>Upper Intensity (%)</label>
+                <input type="number" id="highPct" value="100" inputmode="decimal">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary" onclick="toggleSettings()" aria-label="Settings">⚙️</button>
+            <button class="btn btn-primary" onclick="calculate()">Generate Report</button>
+        </div>
+    </div>
+
+    <!-- REPORT CARD -->
+    <div id="report">
+        
+        <!-- Heart Rate -->
+        <div class="card">
+            <h2>Target Heart Rate</h2>
+            <div class="hr-grid">
+                <div class="hr-card">
+                    <label>LOW 60%</label>
+                    <span class="val" id="hr60">--</span>
+                    <span class="sub">RPE 10-11</span>
+                </div>
+                <div class="hr-card" style="color:#1d4ed8; background:#eff6ff; border-color:#dbeafe;">
+                    <label>MOD 70%</label>
+                    <span class="val" id="hr70">--</span>
+                    <span class="sub">RPE 12-13</span>
+                </div>
+                <div class="hr-card" style="color:#c2410c; background:#fff7ed; border-color:#fed7aa;">
+                    <label>HIGH 80%</label>
+                    <span class="val" id="hr80">--</span>
+                    <span class="sub">RPE 14-15</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis -->
+        <div class="card">
+            <h2>Clinical Analysis</h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-val" id="predVal">--</div>
+                    <div class="stat-lbl">Predicted (m)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val" id="pctVal">--%</div>
+                    <div class="stat-lbl">% Predicted</div>
+                </div>
+                <div class="stat-box" style="flex-basis: 100%;">
+                    <div class="stat-val" id="llnVal">--</div>
+                    <div class="stat-lbl">Lower Limit of Normal (LLN)</div>
+                </div>
+            </div>
+
+            <h2>Prescription <span style="font-size:0.8rem; font-weight:400; color:#666;">(Range: <span id="usedRange"></span>)</span></h2>
+            
+            <div class="rx-item">
+                <div class="rx-icon">🚶</div>
+                <div class="rx-content">
+                    <div class="rx-title">Walking 20m</div>
+                    <div class="rx-desc">Daily distance</div>
+                </div>
+                <div class="rx-result" id="rxWalk20">--</div>
+            </div>
+
+            <div class="rx-item">
+                <div class="rx-icon">🚶</div>
+                <div class="rx-content">
+                    <div class="rx-title">Walking 30m</div>
+                    <div class="rx-desc">Daily distance</div>
+                </div>
+                <div class="rx-result" id="rxWalk30">--</div>
+            </div>
+
+            <div class="rx-item">
+                <div class="rx-icon">🏃</div>
+                <div class="rx-content">
+                    <div class="rx-title">Treadmill</div>
+                    <div class="rx-desc">Speed (km/h)</div>
+                </div>
+                <div class="rx-result" id="rxTread">--</div>
+            </div>
+        </div>
+
+        <!-- Formula Toggle -->
+        <div class="toggle-link" onclick="toggleFormula()">Show Calculation Logic</div>
+
+        <div id="formulaTab" class="formula-tab">
+            <div class="formula-line">
+                <strong>Target Heart Rate</strong>
+                (220 - Age) × Intensity
+            </div>
+            <div class="formula-line">
+                <strong>Pred Distance (Enright '98)</strong>
+                M: (7.57×H) - (5.02×A) - (1.76×W) - 309<br>
+                F: (2.11×H) - (2.29×W) - (5.78×A) + 667
+            </div>
+            <div class="formula-line">
+                <strong>Rx Logic</strong>
+                Base Speed = ActualDist / 100 (km/h)<br>
+                Min = Base × Low% | Max = Base × High%<br>
+                Walk 20 = Speed × 0.33h<br>
+                Walk 30 = Speed × 0.50h
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function toggleSettings() {
+        document.getElementById('settingsDrawer').classList.toggle('open');
+    }
+
+    function toggleFormula() {
+        document.getElementById('formulaTab').classList.toggle('open');
+        // Scroll to bottom if opening
+        if(document.getElementById('formulaTab').classList.contains('open')){
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    }
+
+    function calculate() {
+        // Data gathering
+        const gender = document.getElementById('gender').value;
+        const age = parseFloat(document.getElementById('age').value);
+        const ht = parseFloat(document.getElementById('height').value);
+        const wt = parseFloat(document.getElementById('weight').value);
+        const dist = parseFloat(document.getElementById('distance').value);
+        
+        const lowPct = parseFloat(document.getElementById('lowPct').value) / 100;
+        const highPct = parseFloat(document.getElementById('highPct').value) / 100;
+
+        if(!age || !ht || !wt || !dist) {
+            alert("Please complete all fields");
+            return;
+        }
+
+        // 1. Heart Rate
+        const maxHR = 220 - age;
+        document.getElementById('hr60').innerText = Math.round(maxHR*0.6);
+        document.getElementById('hr70').innerText = Math.round(maxHR*0.7);
+        document.getElementById('hr80').innerText = Math.round(maxHR*0.8);
+
+        // 2. Prediction
+        let pred = 0, lln = 0;
+        if(gender === 'male') {
+            pred = (7.57 * ht) - (5.02 * age) - (1.76 * wt) - 309;
+            lln = pred - 153;
+        } else {
+            pred = (2.11 * ht) - (2.29 * wt) - (5.78 * age) + 667;
+            lln = pred - 139;
+        }
+
+        document.getElementById('predVal').innerText = pred.toFixed(0);
+        document.getElementById('pctVal').innerText = ((dist/pred)*100).toFixed(0) + "%";
+        document.getElementById('llnVal').innerText = lln.toFixed(0);
+
+        // 3. Rx
+        const baseSpd = dist / 100;
+        const minSpd = baseSpd * lowPct;
+        const maxSpd = baseSpd * highPct;
+
+        document.getElementById('rxTread').innerText = `${minSpd.toFixed(1)} - ${maxSpd.toFixed(1)}`;
+        document.getElementById('rxWalk20').innerText = `${(minSpd/3).toFixed(1)} - ${(maxSpd/3).toFixed(1)} km`;
+        document.getElementById('rxWalk30').innerText = `${(minSpd*0.5).toFixed(1)} - ${(maxSpd*0.5).toFixed(1)} km`;
+        
+        document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
+
+        // Show
+        const report = document.getElementById('report');
+        report.style.display = 'block';
+        report.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
