@@ -3,53 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>6MWT Mobile Pro</title>
+    <title>6MWT Pro</title>
     <style>
+        /* --- COLOR VARIABLES --- */
         :root {
+            /* Light Mode (Default) */
             --primary: #4f46e5;
-            --primary-active: #4338ca;
+            --primary-text: white;
             --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #1f2937;
-            --text-light: #6b7280;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
             --border: #e5e7eb;
-            --radius: 12px;
-            --spacing: 16px;
+            --input-bg: #ffffff;
+            --shadow: rgba(0,0,0,0.05);
+
+            /* HR Colors (Light) */
+            --hr-low-bg: #ecfdf5; --hr-low-text: #065f46; --hr-low-border: #d1fae5;
+            --hr-mod-bg: #eff6ff; --hr-mod-text: #1e40af; --hr-mod-border: #dbeafe;
+            --hr-high-bg: #fff7ed; --hr-high-text: #9a3412; --hr-high-border: #ffedd5;
         }
 
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --primary: #6366f1; /* Slightly lighter indigo for contrast */
+            --primary-text: #ffffff;
+            --bg: #111827;      /* Very Dark Grey */
+            --card-bg: #1f2937; /* Dark Grey Card */
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --border: #374151;
+            --input-bg: #374151;
+            --shadow: rgba(0,0,0,0.3);
+
+            /* HR Colors (Dark) */
+            /* Using darker backgrounds with bright text for readability */
+            --hr-low-bg: #064e3b; --hr-low-text: #a7f3d0; --hr-low-border: #065f46;
+            --hr-mod-bg: #1e3a8a; --hr-mod-text: #bfdbfe; --hr-mod-border: #1e40af;
+            --hr-high-bg: #7c2d12; --hr-high-text: #fed7aa; --hr-high-border: #9a3412;
+        }
+
+        /* --- BASE STYLES --- */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             margin: 0;
-            padding: var(--spacing);
+            padding: 20px;
             font-size: 16px;
             padding-bottom: 80px;
+            transition: background-color 0.3s, color 0.3s; /* Smooth Transition */
         }
 
-        h1, h2, h3 { margin: 0; }
+        .container { max-width: 600px; margin: 0 auto; position: relative; }
+
+        /* HEADER & TOGGLE */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
         
-        .container { max-width: 600px; margin: 0 auto; }
+        h2 { font-size: 1.2rem; font-weight: 700; margin: 0; color: var(--text-main); }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: transform 0.2s;
+        }
+        .theme-toggle:active { transform: scale(0.9); }
 
         /* CARDS */
         .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: var(--spacing);
-            margin-bottom: var(--spacing);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px var(--shadow);
             border: 1px solid var(--border);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        h2 {
-            font-size: 1.1rem;
+        .card-title {
+            font-size: 1rem;
             font-weight: 700;
             margin-bottom: 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
-            color: var(--text);
+            color: var(--text-main);
         }
 
         /* INPUT GRID */
@@ -67,25 +118,26 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 4px;
+            color: var(--text-sub);
+            margin-bottom: 5px;
         }
 
         input, select {
             appearance: none;
-            background: #fff;
+            background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 12px;
             font-size: 1rem;
-            color: var(--text);
+            color: var(--text-main);
             width: 100%;
+            transition: border 0.2s, background 0.3s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
         }
 
         @media (min-width: 600px) {
@@ -108,101 +160,87 @@
             font-size: 1rem;
             border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.1s;
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn:active { transform: scale(0.98); }
 
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-light); width: 50px; }
+        .btn-primary { background: var(--primary); color: var(--primary-text); }
+        .btn-secondary { background: var(--input-bg); border: 1px solid var(--border); color: var(--text-sub); width: 50px; }
+        .btn:active { transform: scale(0.98); }
 
         /* SETTINGS DRAWER */
         .drawer {
             display: none;
-            background: #f9fafb;
+            background: var(--bg);
             padding: 15px;
             margin-top: 10px;
             border-radius: 8px;
             border: 1px solid var(--border);
         }
-        .drawer.open { display: block; animation: slideDown 0.2s ease-out; }
-        
-        @keyframes slideDown { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
-
+        .drawer.open { display: block; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .setting-row input { width: 70px; text-align: center; }
 
-        /* RESULTS AREA */
+        /* RESULTS */
         #report { display: none; }
 
-        .hr-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
+        .hr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        
         .hr-card {
-            background: #ecfdf5;
-            color: #065f46;
-            border: 1px solid #d1fae5;
-            padding: 8px 4px;
+            padding: 10px 4px;
             border-radius: 6px;
             text-align: center;
+            border: 1px solid transparent;
         }
-        .hr-card label { display: block; font-size: 0.65rem; margin-bottom: 2px; color: currentColor; opacity: 0.8;}
+        .hr-card label { display: block; font-size: 0.65rem; margin-bottom: 2px; opacity: 0.9; font-weight: bold; }
         .hr-card .val { font-size: 1.1rem; font-weight: 800; display: block; }
-        .hr-card .sub { font-size: 0.65rem; opacity: 0.9; }
+        .hr-card .sub { font-size: 0.65rem; opacity: 0.8; }
 
-        /* Full Analysis Section (Hidden if only age is input) */
+        /* Dynamic HR Colors via classes */
+        .hr-low { background-color: var(--hr-low-bg); color: var(--hr-low-text); border-color: var(--hr-low-border); }
+        .hr-mod { background-color: var(--hr-mod-bg); color: var(--hr-mod-text); border-color: var(--hr-mod-border); }
+        .hr-high { background-color: var(--hr-high-bg); color: var(--hr-high-text); border-color: var(--hr-high-border); }
+
         #fullAnalysisCard { display: none; }
 
-        .stats-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .stats-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .stat-box {
             flex: 1 1 30%;
-            background: #f9fafb;
+            background: var(--bg);
             padding: 12px;
             border-radius: 8px;
             text-align: center;
             min-width: 80px;
+            border: 1px solid var(--border);
         }
         .stat-val { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
-        .stat-lbl { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; line-height: 1.2; }
+        .stat-lbl { font-size: 0.7rem; color: var(--text-sub); margin-top: 4px; line-height: 1.2; }
 
         .rx-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
+            display: flex; align-items: center; padding: 12px 0;
             border-bottom: 1px solid var(--border);
         }
         .rx-item:last-child { border-bottom: none; }
         
         .rx-icon { 
             width: 40px; height: 40px; 
-            background: #eef2ff; color: var(--primary);
+            background: var(--bg); color: var(--primary);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            margin-right: 12px;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            margin-right: 12px; flex-shrink: 0; font-size: 1.2rem;
+            border: 1px solid var(--border);
         }
         
         .rx-content { flex: 1; }
-        .rx-title { font-weight: 600; font-size: 0.95rem; color: var(--text); }
-        .rx-desc { font-size: 0.8rem; color: var(--text-light); }
-        .rx-result { font-weight: 700; color: var(--text); font-size: 1rem; text-align: right; margin-left: 10px; white-space: nowrap;}
+        .rx-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+        .rx-desc { font-size: 0.8rem; color: var(--text-sub); }
+        .rx-result { font-weight: 700; color: var(--text-main); font-size: 1rem; text-align: right; margin-left: 10px; white-space: nowrap;}
 
         .formula-tab {
             margin-top: 20px;
-            background: #111827;
+            background: #111827; /* Always dark for code look */
             color: #d1d5db;
             padding: 15px;
-            border-radius: var(--radius);
+            border-radius: 8px;
             font-size: 0.85rem;
             display: none;
         }
@@ -212,22 +250,25 @@
         
         .toggle-link {
             display: block; text-align: center; margin-top: 20px;
-            color: var(--text-light); font-size: 0.85rem; text-decoration: underline; cursor: pointer;
+            color: var(--text-sub); font-size: 0.85rem; text-decoration: underline; cursor: pointer;
         }
         
         .missing-info-msg {
-            text-align: center; font-size: 0.8rem; color: var(--text-light); padding-top: 10px; font-style: italic;
+            text-align: center; font-size: 0.8rem; color: var(--text-sub); padding-top: 10px; font-style: italic;
         }
-
     </style>
 </head>
 <body>
 
 <div class="container">
     
+    <div class="header-row">
+        <h2>6MWT Input</h2>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☾</button>
+    </div>
+
     <!-- INPUT CARD -->
     <div class="card">
-        <h2>6MWT Input</h2>
         <div class="input-grid">
             <div class="input-group">
                 <label>Gender</label>
@@ -277,19 +318,19 @@
         
         <!-- Heart Rate (Always shows if Age exists) -->
         <div class="card">
-            <h2>Target Heart Rate</h2>
+            <div class="card-title">Target Heart Rate</div>
             <div class="hr-grid">
-                <div class="hr-card">
+                <div class="hr-card hr-low">
                     <label>LOW 60%</label>
                     <span class="val" id="hr60">--</span>
                     <span class="sub">RPE 10-11</span>
                 </div>
-                <div class="hr-card" style="color:#1d4ed8; background:#eff6ff; border-color:#dbeafe;">
+                <div class="hr-card hr-mod">
                     <label>MOD 70%</label>
                     <span class="val" id="hr70">--</span>
                     <span class="sub">RPE 12-13</span>
                 </div>
-                <div class="hr-card" style="color:#c2410c; background:#fff7ed; border-color:#fed7aa;">
+                <div class="hr-card hr-high">
                     <label>HIGH 80%</label>
                     <span class="val" id="hr80">--</span>
                     <span class="sub">RPE 14-15</span>
@@ -302,7 +343,7 @@
 
         <!-- Analysis & Rx (Only shows if all data exists) -->
         <div class="card" id="fullAnalysisCard">
-            <h2>Clinical Analysis</h2>
+            <div class="card-title">Clinical Analysis</div>
             <div class="stats-container">
                 <div class="stat-box">
                     <div class="stat-val" id="predVal">--</div>
@@ -318,7 +359,7 @@
                 </div>
             </div>
 
-            <h2>Prescription <span style="font-size:0.8rem; font-weight:400; color:#666;">(Range: <span id="usedRange"></span>)</span></h2>
+            <div class="card-title">Prescription <span style="font-size:0.8rem; font-weight:400; color:var(--text-sub);"> (Range: <span id="usedRange"></span>)</span></div>
             
             <div class="rx-item">
                 <div class="rx-icon">🚶</div>
@@ -374,6 +415,29 @@
 </div>
 
 <script>
+    // --- THEME LOGIC ---
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+            icon.innerText = '☀';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            icon.innerText = '☾';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Load saved theme on start
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeIcon').innerText = '☀';
+    }
+
+    // --- APP LOGIC ---
     function toggleSettings() {
         document.getElementById('settingsDrawer').classList.toggle('open');
     }
