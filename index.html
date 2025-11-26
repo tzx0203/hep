@@ -3,259 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>6MWT Pro</title>
+    <title>6MWT Modular Pro</title>
     <style>
         /* --- COLOR VARIABLES --- */
         :root {
-            /* Light Mode (Default) */
+            /* Light Mode Base */
             --primary: #4f46e5;
             --primary-text: white;
-            --bg: #f3f4f6;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-sub: #6b7280;
-            --border: #e5e7eb;
-            --input-bg: #ffffff;
-            --shadow: rgba(0,0,0,0.05);
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --input-bg: #f1f5f9;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
 
-            /* HR Colors (Light) */
-            --hr-low-bg: #ecfdf5; --hr-low-text: #065f46; --hr-low-border: #d1fae5;
-            --hr-mod-bg: #eff6ff; --hr-mod-text: #1e40af; --hr-mod-border: #dbeafe;
-            --hr-high-bg: #fff7ed; --hr-high-text: #9a3412; --hr-high-border: #ffedd5;
+            /* --- HR COLORS (LIGHT FEEL) --- */
+            /* We use soft pastel backgrounds with darker text for contrast */
+            
+            /* Soft Mint Green */
+            --hr-low-bg: #d1fae5; 
+            --hr-low-border: #6ee7b7; 
+            --hr-low-text: #065f46;
+            
+            /* Soft Sky Blue */
+            --hr-mod-bg: #dbeafe; 
+            --hr-mod-border: #93c5fd; 
+            --hr-mod-text: #1e40af;
+            
+            /* Soft Peach/Orange */
+            --hr-high-bg: #ffedd5; 
+            --hr-high-border: #fdba74; 
+            --hr-high-text: #9a3412; 
         }
 
         /* Dark Mode Overrides */
         body.dark-mode {
-            --primary: #6366f1; /* Slightly lighter indigo for contrast */
+            --primary: #818cf8; 
             --primary-text: #ffffff;
-            --bg: #111827;      /* Very Dark Grey */
-            --card-bg: #1f2937; /* Dark Grey Card */
-            --text-main: #f3f4f6;
-            --text-sub: #9ca3af;
-            --border: #374151;
-            --input-bg: #374151;
-            --shadow: rgba(0,0,0,0.3);
+            --bg: #0f172a;      
+            --card-bg: #1e293b; 
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --border: #334155;
+            --input-bg: #0f172a;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 
-            /* HR Colors (Dark) */
-            /* Using darker backgrounds with bright text for readability */
-            --hr-low-bg: #064e3b; --hr-low-text: #a7f3d0; --hr-low-border: #065f46;
-            --hr-mod-bg: #1e3a8a; --hr-mod-text: #bfdbfe; --hr-mod-border: #1e40af;
-            --hr-high-bg: #7c2d12; --hr-high-text: #fed7aa; --hr-high-border: #9a3412;
+            /* HR Colors (Dark Mode - Neon Glass) */
+            --hr-low-bg: rgba(16, 185, 129, 0.2); 
+            --hr-low-border: #10b981; 
+            --hr-low-text: #a7f3d0;
+
+            --hr-mod-bg: rgba(59, 130, 246, 0.2); 
+            --hr-mod-border: #3b82f6; 
+            --hr-mod-text: #bfdbfe;
+
+            --hr-high-bg: rgba(249, 115, 22, 0.2); 
+            --hr-high-border: #f97316; 
+            --hr-high-text: #fed7aa;
         }
 
         /* --- BASE STYLES --- */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            font-size: 16px;
-            padding-bottom: 80px;
-            transition: background-color 0.3s, color 0.3s; /* Smooth Transition */
+            margin: 0; padding: 20px;
+            font-size: 16px; padding-bottom: 100px;
+            transition: background 0.3s, color 0.3s;
         }
+        .container { max-width: 600px; margin: 0 auto; }
 
-        .container { max-width: 600px; margin: 0 auto; position: relative; }
-
-        /* HEADER & TOGGLE */
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        h2 { font-size: 1.2rem; font-weight: 700; margin: 0; color: var(--text-main); }
+        /* HEADER */
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h2 { font-size: 1.5rem; font-weight: 800; margin: 0; }
 
         .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 2px 5px var(--shadow);
-            transition: transform 0.2s;
+            background: var(--card-bg); border: 1px solid var(--border);
+            color: var(--text-main); width: 44px; height: 44px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; box-shadow: var(--shadow);
         }
-        .theme-toggle:active { transform: scale(0.9); }
 
         /* CARDS */
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 4px var(--shadow);
-            border: 1px solid var(--border);
-            transition: background-color 0.3s, border-color 0.3s;
+            background: var(--card-bg); border-radius: var(--radius);
+            padding: 20px; margin-bottom: 20px;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
         }
-
         .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-main);
+            font-size: 0.95rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 15px; color: var(--text-sub);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* INPUT GRID */
-        .input-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        /* INPUTS */
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .input-group { display: flex; flex-direction: column; }
-        .input-group:last-child { grid-column: span 2; }
-
-        label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 700;
-            color: var(--text-sub);
-            margin-bottom: 5px;
-        }
-
+        .input-group:last-child { grid-column: span 2; } 
+        label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; }
         input, select {
-            appearance: none;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 1rem;
-            color: var(--text-main);
-            width: 100%;
-            transition: border 0.2s, background 0.3s;
+            appearance: none; background: var(--input-bg);
+            border: 1px solid var(--border); border-radius: 12px;
+            padding: 14px; font-size: 1rem; color: var(--text-main); width: 100%;
         }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-        }
-
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
         @media (min-width: 600px) {
             .input-grid { grid-template-columns: repeat(5, 1fr); }
             .input-group:last-child { grid-column: span 1; }
         }
 
         /* BUTTONS */
-        .btn-group {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn {
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-
+        .btn-group { display: grid; grid-template-columns: auto 1fr; gap: 12px; margin-top: 20px; }
+        .btn { padding: 16px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; }
         .btn-primary { background: var(--primary); color: var(--primary-text); }
-        .btn-secondary { background: var(--input-bg); border: 1px solid var(--border); color: var(--text-sub); width: 50px; }
-        .btn:active { transform: scale(0.98); }
+        .btn-secondary { background: var(--input-bg); border: 1px solid var(--border); color: var(--text-sub); width: 56px; }
 
-        /* SETTINGS DRAWER */
-        .drawer {
-            display: none;
-            background: var(--bg);
-            padding: 15px;
-            margin-top: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
+        /* MODULES & RESULTS */
+        #hrCard, #rxCard, #clinicalCard { display: none; }
+        .drawer { display: none; background: var(--bg); padding: 15px; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); }
         .drawer.open { display: block; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .setting-row input { width: 70px; text-align: center; }
+        .setting-row input { width: 80px; text-align: center; }
 
-        /* RESULTS */
-        #report { display: none; }
-
-        .hr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        /* HR GRID (LAYOUT) */
+        .hr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
-        .hr-card {
-            padding: 10px 4px;
-            border-radius: 6px;
-            text-align: center;
-            border: 1px solid transparent;
+        .hr-card { 
+            padding: 15px 5px; 
+            border-radius: 12px; 
+            text-align: center; 
+            border: 1px solid; /* Uses border variable color */
+            
+            /* Forces Vertical Stack */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .hr-card label { display: block; font-size: 0.65rem; margin-bottom: 2px; opacity: 0.9; font-weight: bold; }
-        .hr-card .val { font-size: 1.1rem; font-weight: 800; display: block; }
-        .hr-card .sub { font-size: 0.65rem; opacity: 0.8; }
 
-        /* Dynamic HR Colors via classes */
-        .hr-low { background-color: var(--hr-low-bg); color: var(--hr-low-text); border-color: var(--hr-low-border); }
-        .hr-mod { background-color: var(--hr-mod-bg); color: var(--hr-mod-text); border-color: var(--hr-mod-border); }
-        .hr-high { background-color: var(--hr-high-bg); color: var(--hr-high-text); border-color: var(--hr-high-border); }
-
-        #fullAnalysisCard { display: none; }
-
-        .stats-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-        .stat-box {
-            flex: 1 1 30%;
-            background: var(--bg);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 80px;
-            border: 1px solid var(--border);
+        .hr-card label { display: block; font-size: 0.7rem; font-weight: 800; opacity: 0.8; margin-bottom: 6px; letter-spacing: 0.05em; }
+        
+        /* The Number */
+        .hr-card .val { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            line-height: 1; 
+            margin-bottom: 6px; 
+            display: block; 
         }
-        .stat-val { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
-        .stat-lbl { font-size: 0.7rem; color: var(--text-sub); margin-top: 4px; line-height: 1.2; }
-
-        .rx-item {
-            display: flex; align-items: center; padding: 12px 0;
-            border-bottom: 1px solid var(--border);
+        
+        /* The RPE Text */
+        .hr-card .sub { 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            opacity: 0.9; 
+            text-transform: uppercase;
+            display: block; 
         }
+        
+        .hr-low { background: var(--hr-low-bg); color: var(--hr-low-text); border-color: var(--hr-low-border); }
+        .hr-mod { background: var(--hr-mod-bg); color: var(--hr-mod-text); border-color: var(--hr-mod-border); }
+        .hr-high { background: var(--hr-high-bg); color: var(--hr-high-text); border-color: var(--hr-high-border); }
+
+        /* RX LIST */
+        .rx-item { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
         .rx-item:last-child { border-bottom: none; }
-        
         .rx-icon { 
-            width: 40px; height: 40px; 
-            background: var(--bg); color: var(--primary);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 12px; flex-shrink: 0; font-size: 1.2rem;
-            border: 1px solid var(--border);
+            width: 48px; height: 48px; background: var(--bg); color: var(--primary);
+            border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; flex-shrink: 0; font-size: 1.4rem;
         }
-        
         .rx-content { flex: 1; }
-        .rx-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
-        .rx-desc { font-size: 0.8rem; color: var(--text-sub); }
-        .rx-result { font-weight: 700; color: var(--text-main); font-size: 1rem; text-align: right; margin-left: 10px; white-space: nowrap;}
+        .rx-title { font-weight: 700; font-size: 1rem; }
+        .rx-desc { font-size: 0.85rem; color: var(--text-sub); }
+        .rx-result { font-weight: 800; color: var(--primary); font-size: 1.1rem; text-align: right; white-space: nowrap;}
 
+        /* CLINICAL STATS */
+        .stats-container { display: flex; gap: 10px; margin-bottom: 10px; }
+        .stat-box { flex: 1; background: var(--bg); padding: 15px 10px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
+        .stat-val { font-size: 1.3rem; font-weight: 800; }
+        .stat-lbl { font-size: 0.75rem; color: var(--text-sub); margin-top: 5px; font-weight: 600; text-transform: uppercase;}
+
+        /* FORMULA TAB STYLES */
+        .toggle-link {
+            display: block; text-align: center; margin-top: 30px;
+            color: var(--text-sub); font-size: 0.85rem; font-weight: 600; text-decoration: underline; cursor: pointer;
+        }
         .formula-tab {
-            margin-top: 20px;
-            background: #111827; /* Always dark for code look */
-            color: #d1d5db;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            margin-top: 25px;
+            background: #0f172a; /* Slate 900 */
+            color: #cbd5e1;       /* Slate 300 */
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
             display: none;
+            line-height: 1.6;
         }
         .formula-tab.open { display: block; }
-        .formula-line { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #374151; }
-        .formula-line strong { color: #60a5fa; display: block; margin-bottom: 4px; }
         
-        .toggle-link {
-            display: block; text-align: center; margin-top: 20px;
-            color: var(--text-sub); font-size: 0.85rem; text-decoration: underline; cursor: pointer;
-        }
+        .f-section { margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        .f-section:last-child { border-bottom: none; }
+        .f-header { color: #ffffff; font-weight: bold; margin-bottom: 8px; font-size: 1rem; }
+        .f-row { margin-bottom: 6px; font-family: monospace; color: #94a3b8; }
+        .f-key { color: #60a5fa; font-weight: bold; }
         
-        .missing-info-msg {
-            text-align: center; font-size: 0.8rem; color: var(--text-sub); padding-top: 10px; font-style: italic;
-        }
+        /* Guide Grid */
+        .guide-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-bottom: 10px; }
+        .guide-icon { color: #22c55e; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -263,7 +220,7 @@
 <div class="container">
     
     <div class="header-row">
-        <h2>6MWT Input</h2>
+        <h2>6MWT Pro</h2>
         <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☾</button>
     </div>
 
@@ -298,11 +255,11 @@
         <!-- Hidden Settings -->
         <div id="settingsDrawer" class="drawer">
             <div class="setting-row">
-                <label>Lower Intensity (%)</label>
+                <label style="color:var(--text-main)">Lower Intensity (%)</label>
                 <input type="number" id="lowPct" value="80" inputmode="decimal">
             </div>
             <div class="setting-row">
-                <label>Upper Intensity (%)</label>
+                <label style="color:var(--text-main)">Upper Intensity (%)</label>
                 <input type="number" id="highPct" value="100" inputmode="decimal">
             </div>
         </div>
@@ -313,214 +270,187 @@
         </div>
     </div>
 
-    <!-- REPORT CARD -->
-    <div id="report">
+    <!-- REPORT MODULES -->
+    <div class="card" id="hrCard">
+        <div class="card-title">Target Heart Rate</div>
+        <div class="hr-grid">
+            <div class="hr-card hr-low">
+                <label>LOW 60%</label><span class="val" id="hr60">--</span><span class="sub">RPE 10-11</span>
+            </div>
+            <div class="hr-card hr-mod">
+                <label>MOD 70%</label><span class="val" id="hr70">--</span><span class="sub">RPE 12-13</span>
+            </div>
+            <div class="hr-card hr-high">
+                <label>HIGH 80%</label><span class="val" id="hr80">--</span><span class="sub">RPE 14-15</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="rxCard">
+        <div class="card-title">Prescription <span style="font-size:0.75rem; background:var(--bg); padding:4px 8px; border-radius:6px;">Range: <span id="usedRange"></span></span></div>
+        <div class="rx-item">
+            <div class="rx-icon">🚶</div>
+            <div class="rx-content"><div class="rx-title">Walking 20m</div><div class="rx-desc">Daily distance target</div></div>
+            <div class="rx-result" id="rxWalk20">--</div>
+        </div>
+        <div class="rx-item">
+            <div class="rx-icon">🚶</div>
+            <div class="rx-content"><div class="rx-title">Walking 30m</div><div class="rx-desc">Daily distance target</div></div>
+            <div class="rx-result" id="rxWalk30">--</div>
+        </div>
+        <div class="rx-item">
+            <div class="rx-icon">🏃</div>
+            <div class="rx-content"><div class="rx-title">Treadmill</div><div class="rx-desc">Speed target (km/h)</div></div>
+            <div class="rx-result" id="rxTread">--</div>
+        </div>
+    </div>
+
+    <div class="card" id="clinicalCard">
+        <div class="card-title">Clinical Analysis</div>
+        <div class="stats-container">
+            <div class="stat-box"><div class="stat-val" id="predVal">--</div><div class="stat-lbl">Predicted (m)</div></div>
+            <div class="stat-box"><div class="stat-val" id="pctVal">--%</div><div class="stat-lbl">% Predicted</div></div>
+            <div class="stat-box"><div class="stat-val" id="llnVal">--</div><div class="stat-lbl">LLN</div></div>
+        </div>
+    </div>
+    
+    <div id="hintMsg" style="text-align:center; font-size:0.85rem; color:var(--text-sub); margin-top:15px; background:var(--bg); padding:10px; border-radius:8px;">
+        ℹ️ Enter more data to unlock specific sections.
+    </div>
+
+    <!-- FORMULA TAB -->
+    <div class="toggle-link" onclick="toggleFormula()">Show Logic & Formulas</div>
+
+    <div id="formulaTab" class="formula-tab">
         
-        <!-- Heart Rate (Always shows if Age exists) -->
-        <div class="card">
-            <div class="card-title">Target Heart Rate</div>
-            <div class="hr-grid">
-                <div class="hr-card hr-low">
-                    <label>LOW 60%</label>
-                    <span class="val" id="hr60">--</span>
-                    <span class="sub">RPE 10-11</span>
-                </div>
-                <div class="hr-card hr-mod">
-                    <label>MOD 70%</label>
-                    <span class="val" id="hr70">--</span>
-                    <span class="sub">RPE 12-13</span>
-                </div>
-                <div class="hr-card hr-high">
-                    <label>HIGH 80%</label>
-                    <span class="val" id="hr80">--</span>
-                    <span class="sub">RPE 14-15</span>
-                </div>
-            </div>
-            <div id="partialMsg" class="missing-info-msg" style="display:none;">
-                Enter Height, Weight & Distance to see full analysis.
+        <!-- Section 1: Guide -->
+        <div class="f-section">
+            <div class="f-header">⚡ Quick Input Guide</div>
+            <div class="guide-grid">
+                <span class="guide-icon">✓</span> <span>Input <strong>Age</strong> → Get Heart Rate</span>
+                <span class="guide-icon">✓</span> <span>Input <strong>Distance</strong> → Get Exercise Rx</span>
+                <span class="guide-icon">✓</span> <span>Input <strong>Ht, Wt, Age, Dist</strong> → Get Full Clinical Analysis</span>
             </div>
         </div>
 
-        <!-- Analysis & Rx (Only shows if all data exists) -->
-        <div class="card" id="fullAnalysisCard">
-            <div class="card-title">Clinical Analysis</div>
-            <div class="stats-container">
-                <div class="stat-box">
-                    <div class="stat-val" id="predVal">--</div>
-                    <div class="stat-lbl">Predicted (m)</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-val" id="pctVal">--%</div>
-                    <div class="stat-lbl">% Predicted</div>
-                </div>
-                <div class="stat-box" style="flex-basis: 100%;">
-                    <div class="stat-val" id="llnVal">--</div>
-                    <div class="stat-lbl">Lower Limit of Normal (LLN)</div>
-                </div>
-            </div>
-
-            <div class="card-title">Prescription <span style="font-size:0.8rem; font-weight:400; color:var(--text-sub);"> (Range: <span id="usedRange"></span>)</span></div>
-            
-            <div class="rx-item">
-                <div class="rx-icon">🚶</div>
-                <div class="rx-content">
-                    <div class="rx-title">Walking 20m</div>
-                    <div class="rx-desc">Daily distance</div>
-                </div>
-                <div class="rx-result" id="rxWalk20">--</div>
-            </div>
-
-            <div class="rx-item">
-                <div class="rx-icon">🚶</div>
-                <div class="rx-content">
-                    <div class="rx-title">Walking 30m</div>
-                    <div class="rx-desc">Daily distance</div>
-                </div>
-                <div class="rx-result" id="rxWalk30">--</div>
-            </div>
-
-            <div class="rx-item">
-                <div class="rx-icon">🏃</div>
-                <div class="rx-content">
-                    <div class="rx-title">Treadmill</div>
-                    <div class="rx-desc">Speed (km/h)</div>
-                </div>
-                <div class="rx-result" id="rxTread">--</div>
-            </div>
+        <!-- Section 2: HR -->
+        <div class="f-section">
+            <div class="f-header">1. Heart Rate (Fox Formula)</div>
+            <div class="f-row"><span class="f-key">Max HR</span> = 220 - Age</div>
+            <div class="f-row"><span class="f-key">Target</span> = Max HR × Intensity (0.6, 0.7, 0.8)</div>
         </div>
 
-        <!-- Formula Toggle -->
-        <div class="toggle-link" onclick="toggleFormula()">Show Calculation Logic</div>
+        <!-- Section 3: Rx -->
+        <div class="f-section">
+            <div class="f-header">2. Exercise Prescription</div>
+            <div class="f-row">
+                <span class="f-key">Base Speed</span> = Distance / 100 <br>
+                <small style="opacity:0.7">(Derived from: Dist / 6min × 60 / 1000)</small>
+            </div>
+            <div class="f-row"><span class="f-key">Treadmill</span> = [Base × Low%, Base × High%]</div>
+            <div class="f-row"><span class="f-key">Walk 20m</span> = Speed × (20/60)</div>
+            <div class="f-row"><span class="f-key">Walk 30m</span> = Speed × (30/60)</div>
+        </div>
 
-        <div id="formulaTab" class="formula-tab">
-            <div class="formula-line">
-                <strong>Target Heart Rate</strong>
-                (220 - Age) × Intensity
+        <!-- Section 4: Clinical -->
+        <div class="f-section">
+            <div class="f-header">3. Predicted Distance (Enright 1998)</div>
+            <div class="f-row">
+                <strong>Male:</strong><br> 
+                (7.57 × Ht) - (5.02 × Age) - (1.76 × Wt) - 309
             </div>
-            <div class="formula-line">
-                <strong>Pred Distance (Enright '98)</strong>
-                M: (7.57×H) - (5.02×A) - (1.76×W) - 309<br>
-                F: (2.11×H) - (2.29×W) - (5.78×A) + 667
+            <div style="margin-top:5px;" class="f-row">
+                <strong>Female:</strong><br>
+                (2.11 × Ht) - (2.29 × Wt) - (5.78 × Age) + 667
             </div>
-            <div class="formula-line">
-                <strong>Rx Logic</strong>
-                Base Speed = ActualDist / 100 (km/h)<br>
-                Min = Base × Low% | Max = Base × High%<br>
-                Walk 20 = Speed × 0.33h<br>
-                Walk 30 = Speed × 0.50h
+            <div style="margin-top:8px;" class="f-row">
+                <span class="f-key">LLN (Lower Limit)</span> = Pred - 153 (M) / 139 (F)
             </div>
         </div>
 
     </div>
+
 </div>
 
 <script>
-    // --- THEME LOGIC ---
     function toggleTheme() {
-        const body = document.body;
-        const icon = document.getElementById('themeIcon');
-        body.classList.toggle('dark-mode');
-        
-        if (body.classList.contains('dark-mode')) {
-            icon.innerText = '☀';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            icon.innerText = '☾';
-            localStorage.setItem('theme', 'light');
-        }
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        document.getElementById('themeIcon').innerText = isDark ? '☀' : '☾';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
-
-    // Load saved theme on start
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         document.getElementById('themeIcon').innerText = '☀';
     }
 
-    // --- APP LOGIC ---
-    function toggleSettings() {
-        document.getElementById('settingsDrawer').classList.toggle('open');
-    }
-
-    function toggleFormula() {
-        document.getElementById('formulaTab').classList.toggle('open');
-        if(document.getElementById('formulaTab').classList.contains('open')){
-            window.scrollTo(0, document.body.scrollHeight);
-        }
+    function toggleSettings() { document.getElementById('settingsDrawer').classList.toggle('open'); }
+    function toggleFormula() { 
+        const tab = document.getElementById('formulaTab');
+        tab.classList.toggle('open');
+        if(tab.classList.contains('open')) window.scrollTo(0, document.body.scrollHeight);
     }
 
     function calculate() {
-        // Data gathering
         const gender = document.getElementById('gender').value;
         const age = parseFloat(document.getElementById('age').value);
         const ht = parseFloat(document.getElementById('height').value);
         const wt = parseFloat(document.getElementById('weight').value);
         const dist = parseFloat(document.getElementById('distance').value);
-        
         const lowPct = parseFloat(document.getElementById('lowPct').value) / 100;
         const highPct = parseFloat(document.getElementById('highPct').value) / 100;
 
-        // 1. MINIMUM VALIDATION: Age is required
-        if(!age) {
-            alert("Please enter at least your AGE to generate Target Heart Rates.");
-            return;
-        }
+        if (!age && !dist) { alert("Please enter at least AGE or DISTANCE."); return; }
 
-        // 2. SHOW REPORT CONTAINER
-        const report = document.getElementById('report');
-        report.style.display = 'block';
+        // HR
+        const hrCard = document.getElementById('hrCard');
+        if (age) {
+            hrCard.style.display = 'block';
+            const maxHR = 220 - age;
+            document.getElementById('hr60').innerText = Math.round(maxHR*0.6);
+            document.getElementById('hr70').innerText = Math.round(maxHR*0.7);
+            document.getElementById('hr80').innerText = Math.round(maxHR*0.8);
+        } else { hrCard.style.display = 'none'; }
 
-        // 3. CALCULATE HEART RATE (Available with just Age)
-        const maxHR = 220 - age;
-        document.getElementById('hr60').innerText = Math.round(maxHR*0.6);
-        document.getElementById('hr70').innerText = Math.round(maxHR*0.7);
-        document.getElementById('hr80').innerText = Math.round(maxHR*0.8);
+        // Rx
+        const rxCard = document.getElementById('rxCard');
+        if (dist) {
+            rxCard.style.display = 'block';
+            const baseSpd = dist / 100;
+            const minSpd = baseSpd * lowPct;
+            const maxSpd = baseSpd * highPct;
+            document.getElementById('rxTread').innerText = `${minSpd.toFixed(1)} - ${maxSpd.toFixed(1)}`;
+            document.getElementById('rxWalk20').innerText = `${(minSpd/3).toFixed(1)} - ${(maxSpd/3).toFixed(1)} km`;
+            document.getElementById('rxWalk30').innerText = `${(minSpd*0.5).toFixed(1)} - ${(maxSpd*0.5).toFixed(1)} km`;
+            document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
+        } else { rxCard.style.display = 'none'; }
 
-        // 4. CHECK IF FULL DATA IS AVAILABLE
-        const fullDataAvailable = (ht && wt && dist);
-        const fullCard = document.getElementById('fullAnalysisCard');
-        const partialMsg = document.getElementById('partialMsg');
-
-        if(fullDataAvailable) {
-            // SHOW Full Analysis
-            fullCard.style.display = 'block';
-            partialMsg.style.display = 'none';
-
-            // -- PREDICTION LOGIC --
+        // Clinical
+        const clinicalCard = document.getElementById('clinicalCard');
+        const fullData = (age && ht && wt && dist);
+        if (fullData) {
+            clinicalCard.style.display = 'block';
+            document.getElementById('hintMsg').style.display = 'none';
             let pred = 0, lln = 0;
-            if(gender === 'male') {
+            if (gender === 'male') {
                 pred = (7.57 * ht) - (5.02 * age) - (1.76 * wt) - 309;
                 lln = pred - 153;
             } else {
                 pred = (2.11 * ht) - (2.29 * wt) - (5.78 * age) + 667;
                 lln = pred - 139;
             }
-
             document.getElementById('predVal').innerText = pred.toFixed(0);
             document.getElementById('pctVal').innerText = ((dist/pred)*100).toFixed(0) + "%";
             document.getElementById('llnVal').innerText = lln.toFixed(0);
-
-            // -- RX LOGIC --
-            const baseSpd = dist / 100;
-            const minSpd = baseSpd * lowPct;
-            const maxSpd = baseSpd * highPct;
-
-            document.getElementById('rxTread').innerText = `${minSpd.toFixed(1)} - ${maxSpd.toFixed(1)}`;
-            document.getElementById('rxWalk20').innerText = `${(minSpd/3).toFixed(1)} - ${(maxSpd/3).toFixed(1)} km`;
-            document.getElementById('rxWalk30').innerText = `${(minSpd*0.5).toFixed(1)} - ${(maxSpd*0.5).toFixed(1)} km`;
-            
-            document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
-
         } else {
-            // HIDE Full Analysis if data missing
-            fullCard.style.display = 'none';
-            partialMsg.style.display = 'block';
+            clinicalCard.style.display = 'none';
+            document.getElementById('hintMsg').style.display = 'block';
         }
 
-        // Scroll to results
-        report.scrollIntoView({ behavior: 'smooth' });
+        if(age && !dist) hrCard.scrollIntoView({ behavior: 'smooth' });
+        else if(dist && !age) rxCard.scrollIntoView({ behavior: 'smooth' });
+        else if(fullData) hrCard.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
-
 </body>
 </html>
