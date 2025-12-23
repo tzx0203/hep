@@ -19,23 +19,10 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --radius: 16px;
 
-            /* --- HR COLORS (LIGHT FEEL) --- */
-            /* We use soft pastel backgrounds with darker text for contrast */
-            
-            /* Soft Mint Green */
-            --hr-low-bg: #d1fae5; 
-            --hr-low-border: #6ee7b7; 
-            --hr-low-text: #065f46;
-            
-            /* Soft Sky Blue */
-            --hr-mod-bg: #dbeafe; 
-            --hr-mod-border: #93c5fd; 
-            --hr-mod-text: #1e40af;
-            
-            /* Soft Peach/Orange */
-            --hr-high-bg: #ffedd5; 
-            --hr-high-border: #fdba74; 
-            --hr-high-text: #9a3412; 
+            /* --- HR COLORS (PASTEL LIGHT FEEL) --- */
+            --hr-low-bg: #d1fae5; --hr-low-border: #6ee7b7; --hr-low-text: #065f46;
+            --hr-mod-bg: #dbeafe; --hr-mod-border: #93c5fd; --hr-mod-text: #1e40af;
+            --hr-high-bg: #ffedd5; --hr-high-border: #fdba74; --hr-high-text: #9a3412; 
         }
 
         /* Dark Mode Overrides */
@@ -51,17 +38,9 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 
             /* HR Colors (Dark Mode - Neon Glass) */
-            --hr-low-bg: rgba(16, 185, 129, 0.2); 
-            --hr-low-border: #10b981; 
-            --hr-low-text: #a7f3d0;
-
-            --hr-mod-bg: rgba(59, 130, 246, 0.2); 
-            --hr-mod-border: #3b82f6; 
-            --hr-mod-text: #bfdbfe;
-
-            --hr-high-bg: rgba(249, 115, 22, 0.2); 
-            --hr-high-border: #f97316; 
-            --hr-high-text: #fed7aa;
+            --hr-low-bg: rgba(16, 185, 129, 0.2); --hr-low-border: #10b981; --hr-low-text: #a7f3d0;
+            --hr-mod-bg: rgba(59, 130, 246, 0.2); --hr-mod-border: #3b82f6; --hr-mod-text: #bfdbfe;
+            --hr-high-bg: rgba(249, 115, 22, 0.2); --hr-high-border: #f97316; --hr-high-text: #fed7aa;
         }
 
         /* --- BASE STYLES --- */
@@ -102,7 +81,7 @@
         /* INPUTS */
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .input-group { display: flex; flex-direction: column; }
-        .input-group:last-child { grid-column: span 2; } 
+        
         label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; }
         input, select {
             appearance: none; background: var(--input-bg);
@@ -110,9 +89,9 @@
             padding: 14px; font-size: 1rem; color: var(--text-main); width: 100%;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); }
+        
         @media (min-width: 600px) {
-            .input-grid { grid-template-columns: repeat(5, 1fr); }
-            .input-group:last-child { grid-column: span 1; }
+            .input-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         /* BUTTONS */
@@ -128,41 +107,17 @@
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .setting-row input { width: 80px; text-align: center; }
 
-        /* HR GRID (LAYOUT) */
+        /* HR GRID (Vertical Stack Layout) */
         .hr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
         .hr-card { 
-            padding: 15px 5px; 
-            border-radius: 12px; 
-            text-align: center; 
-            border: 1px solid; /* Uses border variable color */
-            
-            /* Forces Vertical Stack */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 15px 5px; border-radius: 12px; text-align: center; border: 1px solid; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
         .hr-card label { display: block; font-size: 0.7rem; font-weight: 800; opacity: 0.8; margin-bottom: 6px; letter-spacing: 0.05em; }
-        
-        /* The Number */
-        .hr-card .val { 
-            font-size: 1.6rem; 
-            font-weight: 900; 
-            line-height: 1; 
-            margin-bottom: 6px; 
-            display: block; 
-        }
-        
-        /* The RPE Text */
-        .hr-card .sub { 
-            font-size: 0.65rem; 
-            font-weight: 700; 
-            opacity: 0.9; 
-            text-transform: uppercase;
-            display: block; 
-        }
+        .hr-card .val { font-size: 1.6rem; font-weight: 900; line-height: 1; margin-bottom: 6px; display: block; }
+        .hr-card .sub { font-size: 0.65rem; font-weight: 700; opacity: 0.9; text-transform: uppercase; display: block; }
         
         .hr-low { background: var(--hr-low-bg); color: var(--hr-low-text); border-color: var(--hr-low-border); }
         .hr-mod { background: var(--hr-mod-bg); color: var(--hr-mod-text); border-color: var(--hr-mod-border); }
@@ -187,32 +142,38 @@
         .stat-val { font-size: 1.3rem; font-weight: 800; }
         .stat-lbl { font-size: 0.75rem; color: var(--text-sub); margin-top: 5px; font-weight: 600; text-transform: uppercase;}
 
-        /* FORMULA TAB STYLES */
+        /* FORMULA TAB STYLES (Refined for Space) */
         .toggle-link {
             display: block; text-align: center; margin-top: 30px;
-            color: var(--text-sub); font-size: 0.85rem; font-weight: 600; text-decoration: underline; cursor: pointer;
+            color: var(--text-sub); font-size: 0.9rem; font-weight: 600; text-decoration: underline; cursor: pointer;
         }
         .formula-tab {
             margin-top: 25px;
             background: #0f172a; /* Slate 900 */
             color: #cbd5e1;       /* Slate 300 */
-            padding: 20px;
+            padding: 25px;        /* More padding */
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;   /* Larger font */
             display: none;
-            line-height: 1.6;
+            line-height: 1.7;     /* More breathing room */
         }
         .formula-tab.open { display: block; }
         
-        .f-section { margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        .f-section { margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 20px; }
         .f-section:last-child { border-bottom: none; }
-        .f-header { color: #ffffff; font-weight: bold; margin-bottom: 8px; font-size: 1rem; }
-        .f-row { margin-bottom: 6px; font-family: monospace; color: #94a3b8; }
+        .f-header { color: #ffffff; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; }
+        .f-row { margin-bottom: 8px; font-family: 'Courier New', Courier, monospace; color: #94a3b8; }
         .f-key { color: #60a5fa; font-weight: bold; }
         
-        /* Guide Grid */
-        .guide-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-bottom: 10px; }
+        .guide-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px; margin-bottom: 10px; }
         .guide-icon { color: #22c55e; font-weight: bold; }
+        .guide-text { color: #cbd5e1; }
+
+        /* Method Badge */
+        .method-badge {
+            font-size: 0.7rem; background: var(--bg); color: var(--text-main);
+            padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);
+        }
     </style>
 </head>
 <body>
@@ -239,6 +200,10 @@
                 <input type="number" id="age" placeholder="Yrs" inputmode="decimal">
             </div>
             <div class="input-group">
+                <label>Resting HR</label>
+                <input type="number" id="rhr" placeholder="bpm (Opt)" inputmode="decimal">
+            </div>
+            <div class="input-group">
                 <label>Height (cm)</label>
                 <input type="number" id="height" placeholder="cm" inputmode="decimal">
             </div>
@@ -247,7 +212,7 @@
                 <input type="number" id="weight" placeholder="kg" inputmode="decimal">
             </div>
             <div class="input-group">
-                <label>Distance Walked</label>
+                <label>Distance</label>
                 <input type="number" id="distance" placeholder="Meters" inputmode="decimal">
             </div>
         </div>
@@ -272,7 +237,10 @@
 
     <!-- REPORT MODULES -->
     <div class="card" id="hrCard">
-        <div class="card-title">Target Heart Rate</div>
+        <div class="card-title">
+            <span>Target Heart Rate</span>
+            <span class="method-badge" id="hrMethod">Standard</span>
+        </div>
         <div class="hr-grid">
             <div class="hr-card hr-low">
                 <label>LOW 60%</label><span class="val" id="hr60">--</span><span class="sub">RPE 10-11</span>
@@ -287,7 +255,7 @@
     </div>
 
     <div class="card" id="rxCard">
-        <div class="card-title">Prescription <span style="font-size:0.75rem; background:var(--bg); padding:4px 8px; border-radius:6px;">Range: <span id="usedRange"></span></span></div>
+        <div class="card-title">Prescription <span class="method-badge">Range: <span id="usedRange"></span></span></div>
         <div class="rx-item">
             <div class="rx-icon">🚶</div>
             <div class="rx-content"><div class="rx-title">Walking 20m</div><div class="rx-desc">Daily distance target</div></div>
@@ -327,17 +295,28 @@
         <div class="f-section">
             <div class="f-header">⚡ Quick Input Guide</div>
             <div class="guide-grid">
-                <span class="guide-icon">✓</span> <span>Input <strong>Age</strong> → Get Heart Rate</span>
-                <span class="guide-icon">✓</span> <span>Input <strong>Distance</strong> → Get Exercise Rx</span>
-                <span class="guide-icon">✓</span> <span>Input <strong>Ht, Wt, Age, Dist</strong> → Get Full Clinical Analysis</span>
+                <span class="guide-icon">✓</span> <span class="guide-text">Input <strong>Age</strong> → Get Standard HR</span>
+                <span class="guide-icon">✓</span> <span class="guide-text">Input <strong>Age + Resting HR</strong> → Get Karvonen HR (Precise)</span>
+                <span class="guide-icon">✓</span> <span class="guide-text">Input <strong>Distance</strong> → Get Exercise Rx</span>
+                <span class="guide-icon">✓</span> <span class="guide-text">Input <strong>Ht, Wt, Age, Dist</strong> → Get Full Clinical Analysis</span>
             </div>
         </div>
 
         <!-- Section 2: HR -->
         <div class="f-section">
-            <div class="f-header">1. Heart Rate (Fox Formula)</div>
-            <div class="f-row"><span class="f-key">Max HR</span> = 220 - Age</div>
-            <div class="f-row"><span class="f-key">Target</span> = Max HR × Intensity (0.6, 0.7, 0.8)</div>
+            <div class="f-header">1. Heart Rate Logic</div>
+            
+            <div style="margin-bottom:15px;">
+                <div style="color:#ffffff; font-weight:bold; margin-bottom:5px;">A. Standard (Fox)</div>
+                <div class="f-row"><span class="f-key">Max HR</span> = 220 - Age</div>
+                <div class="f-row"><span class="f-key">Target</span> = Max HR × Intensity</div>
+            </div>
+
+            <div>
+                <div style="color:#ffffff; font-weight:bold; margin-bottom:5px;">B. Karvonen (With Resting HR)</div>
+                <div class="f-row"><span class="f-key">Reserve</span> = Max HR - Resting HR</div>
+                <div class="f-row"><span class="f-key">Target</span> = (Reserve × Intensity) + Resting HR</div>
+            </div>
         </div>
 
         <!-- Section 3: Rx -->
@@ -359,12 +338,12 @@
                 <strong>Male:</strong><br> 
                 (7.57 × Ht) - (5.02 × Age) - (1.76 × Wt) - 309
             </div>
-            <div style="margin-top:5px;" class="f-row">
+            <div style="margin-top:8px;" class="f-row">
                 <strong>Female:</strong><br>
                 (2.11 × Ht) - (2.29 × Wt) - (5.78 × Age) + 667
             </div>
             <div style="margin-top:8px;" class="f-row">
-                <span class="f-key">LLN (Lower Limit)</span> = Pred - 153 (M) / 139 (F)
+                <span class="f-key">LLN</span> = Pred - 153 (M) / 139 (F)
             </div>
         </div>
 
@@ -394,6 +373,7 @@
     function calculate() {
         const gender = document.getElementById('gender').value;
         const age = parseFloat(document.getElementById('age').value);
+        const rhr = parseFloat(document.getElementById('rhr').value);
         const ht = parseFloat(document.getElementById('height').value);
         const wt = parseFloat(document.getElementById('weight').value);
         const dist = parseFloat(document.getElementById('distance').value);
@@ -402,17 +382,36 @@
 
         if (!age && !dist) { alert("Please enter at least AGE or DISTANCE."); return; }
 
-        // HR
+        // --- HEART RATE ---
         const hrCard = document.getElementById('hrCard');
+        const hrMethod = document.getElementById('hrMethod');
+        
         if (age) {
             hrCard.style.display = 'block';
             const maxHR = 220 - age;
-            document.getElementById('hr60').innerText = Math.round(maxHR*0.6);
-            document.getElementById('hr70').innerText = Math.round(maxHR*0.7);
-            document.getElementById('hr80').innerText = Math.round(maxHR*0.8);
+            let hr60, hr70, hr80;
+
+            if (rhr) {
+                // Karvonen
+                hrMethod.innerText = "Method: Karvonen";
+                const hrr = maxHR - rhr;
+                hr60 = Math.round((hrr * 0.60) + rhr);
+                hr70 = Math.round((hrr * 0.70) + rhr);
+                hr80 = Math.round((hrr * 0.80) + rhr);
+            } else {
+                // Standard
+                hrMethod.innerText = "Method: Standard";
+                hr60 = Math.round(maxHR * 0.60);
+                hr70 = Math.round(maxHR * 0.70);
+                hr80 = Math.round(maxHR * 0.80);
+            }
+
+            document.getElementById('hr60').innerText = hr60;
+            document.getElementById('hr70').innerText = hr70;
+            document.getElementById('hr80').innerText = hr80;
         } else { hrCard.style.display = 'none'; }
 
-        // Rx
+        // --- PRESCRIPTION ---
         const rxCard = document.getElementById('rxCard');
         if (dist) {
             rxCard.style.display = 'block';
@@ -425,7 +424,7 @@
             document.getElementById('usedRange').innerText = `${(lowPct*100).toFixed(0)}-${(highPct*100).toFixed(0)}%`;
         } else { rxCard.style.display = 'none'; }
 
-        // Clinical
+        // --- CLINICAL ---
         const clinicalCard = document.getElementById('clinicalCard');
         const fullData = (age && ht && wt && dist);
         if (fullData) {
